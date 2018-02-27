@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="preference_sort_by_labels">
+        <item>Top Rated</item>
+        <item>Most Popular</item>
+        <item>Favorites</item>
+    </array>
+
+    <array name="preference_sort_by_values">
+        <item>top_rated</item>
+        <item>popular</item>
+        <item>favorites</item>
+    </array>
+
+</resources>

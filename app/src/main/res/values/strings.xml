@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <!-- Used in Json fetch and keys for movie details-->
+    <string name="json_results_array" translatable="false">results</string>
+    <string name="title" translatable="false">title</string>
+    <string name="releaseDate" translatable="false">release_date</string>
+    <string name="averageVote" translatable="false">vote_average</string>
+    <string name="plot" translatable="false">overview</string>
+    <string name="posterPath" translatable="false">poster_path</string>
+    <string name="movie_detail_Key" translatable="false">movie</string>
+    <string name="movie_id_Key" translatable="false">movie_id</string>
+    <!-- Detail Activity-->
+    <string name="release_date_label">Release Date</string>
+    <string name="vote_average_label">Average Rating</string>
+    <string name="trailers_label">Trailers</string>
+    <string name="reviews_label">Reviews</string>
+    <!-- Content descriptions-->
+    <string name="movie_content_description">Movie Poster</string>
+    <!-- Settings menu button name-->
+    <string name="app_settings">Settings</string>
+    <!-- Settings fetch movies by list-->
+    <string name="fetch_by_most_popular" translatable="false">popular</string>
+    <string name="fetch_by_top_rated" translatable="false">top_rated</string>
+    <string name="fetch_favorites" translatable="false">favorites</string>
+    <string name="fetch_movie_key" translatable="false">sortKey</string>
+    <string name="fetch_movie_list_title">Fetch Movies By</string>
+    <!-- Favorites Button Title-->
+    <string name="remove_from_favorites_button_title">Remove from Favorites</string>
+    <string name="add_to_favorites_button_title">Add To Favorites</string>
+    <!-- Error message Strings-->
+    <string name="network_error">Could not connect to movies DB. Please check you network connection and try again</string>
+    <!-- Share trailer Strings-->
+    <string name="share_type" translatable="false">"text/plain"</string>
+    <string name="share_intent_title">Share Options</string>
+    <string name="share_body" >Movie trailer</string>
+    <string name="share_button_title" >Share</string>
+</resources>
