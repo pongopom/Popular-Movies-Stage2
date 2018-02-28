@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,6 @@ import android.widget.TextView;
 import com.example.android.popularmovies.data.FavoritesContract;
 import com.example.android.popularmovies.data.Movie;
 import com.example.android.popularmovies.data.MoviesAsyncTaskLoader;
-import com.example.android.popularmovies.utils.ApplicationUtils;
 
 import java.util.ArrayList;
 
@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
     RecyclerView mMovieRecyclerView;
     @BindString(R.string.movie_detail_Key)
     String mMovieDetailKey;
+    @BindString(R.string.recycler_position_key)
+    String mRecyclerPositionKey;
+    GridLayoutManager mLayoutManager;
+    Parcelable listState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         //Set up the recyclerView that will show the movies
         mMovies = new ArrayList<>();
-        int mNoOfColumns = ApplicationUtils.calculateNoOfColumns(getApplicationContext());
-        mMovieRecyclerView.setLayoutManager(new GridLayoutManager(this, mNoOfColumns));
+        mLayoutManager = new GridLayoutManager(this, 3);
+        mMovieRecyclerView.setLayoutManager(mLayoutManager);
         mMovieRecyclerViewAdapter = new MovieRecyclerViewAdapter(mMovies, this, this);
         mMovieRecyclerView.setAdapter(mMovieRecyclerViewAdapter);
         String fetchMoviesString = sharedPreferences.getString(this.getResources().getString(R.string.fetch_movie_key), this.getResources().getString(R.string.fetch_by_most_popular));
@@ -115,14 +119,19 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
             if (movies != null) {
                 mMovies = movies;
                 mMovieRecyclerViewAdapter.setDataSource(mMovies);
+                if (listState != null) {
+                   mLayoutManager.onRestoreInstanceState(listState);
+                }
             } else {
                 mNoNetworkTextView.setVisibility(View.VISIBLE);
             }
             mProgressBar.setVisibility(View.GONE);
+
         }
 
         @Override
         public void onLoaderReset(Loader<ArrayList<Movie>> loader) {
+            mMovies = null;
         }
     };
 
@@ -163,26 +172,31 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
                 null, null, null);
     }
 
-
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader
             , Cursor cursor) {
         if (cursor != null) {
             cursor.moveToPosition(-1);
-
             try {
                 while (cursor.moveToNext()) {
-                    String title = cursor.getString(cursor.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_TITLE));
-                    String movieId = cursor.getString(cursor.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID));
-                    String plot = cursor.getString(cursor.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_PLOT));
-                    String date = cursor.getString(cursor.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_RELEASE_DATE));
-                    String vote = cursor.getString(cursor.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_AVERAGE_VOTE));
-                    String path = cursor.getString(cursor.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_POSTER_PATH));
+                    String title = cursor.getString(cursor.getColumnIndex
+                            (FavoritesContract.FavoritesEntry.COLUMN_TITLE));
+                    String movieId = cursor.getString(cursor.getColumnIndex
+                            (FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID));
+                    String plot = cursor.getString(cursor.getColumnIndex
+                            (FavoritesContract.FavoritesEntry.COLUMN_PLOT));
+                    String date = cursor.getString(cursor.getColumnIndex
+                            (FavoritesContract.FavoritesEntry.COLUMN_RELEASE_DATE));
+                    String vote = cursor.getString(cursor.getColumnIndex
+                            (FavoritesContract.FavoritesEntry.COLUMN_AVERAGE_VOTE));
+                    String path = cursor.getString(cursor.getColumnIndex
+                            (FavoritesContract.FavoritesEntry.COLUMN_POSTER_PATH));
                     Movie movie = new Movie(movieId, title, date, vote, plot, path);
                     mMovies.add(movie);
                 }
             } finally {
                 mMovieRecyclerViewAdapter.setDataSource(mMovies);
+                mLayoutManager.onRestoreInstanceState(listState);
             }
         }
     }
@@ -191,5 +205,24 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
     public void onLoaderReset(android.support.v4.content.Loader loader) {
 
     }
+
+    // save recycler scroll position on rotation
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(mRecyclerPositionKey,
+                mMovieRecyclerView.getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        listState = state.getParcelable(mRecyclerPositionKey);
+        System.out.println(listState);
+        mMovieRecyclerView.getLayoutManager().onRestoreInstanceState(listState);
+    }
+
 }
+
+
 

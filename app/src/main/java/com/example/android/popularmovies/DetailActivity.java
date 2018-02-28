@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.popularmovies.data.FavoritesContract;
 import com.example.android.popularmovies.data.Movie;
@@ -39,6 +41,9 @@ public class DetailActivity extends AppCompatActivity implements TrailerRecycler
 
     private static final int REVIEW_LOADER = 100;
     private static final int TRAILER_LOADER = 1000;
+
+    @BindView(R.id.scroll_view)
+    NestedScrollView mScrollView;
     @BindView(R.id.poster_iv)
     ImageView mPosterImageView;
     @BindView(R.id.title_tv)
@@ -75,6 +80,8 @@ public class DetailActivity extends AppCompatActivity implements TrailerRecycler
     String mShareTitle;
     @BindString(R.string.share_body)
     String mShareBody;
+    @BindString(R.string.scroll_position_key)
+    String mScrollPositionKey;
 
     private ArrayList<Review> mReviews;
     private ArrayList<Trailer> mTrailers;
@@ -88,6 +95,10 @@ public class DetailActivity extends AppCompatActivity implements TrailerRecycler
     private String mMoviePosterPath;
     private boolean mIsFavorite;
     private boolean mHasTrailers;
+    private int[] mScrollPosition;
+    private boolean mReviewsLoaded;
+    private boolean mTrailersLoaded;
+    private  Toast mFavoritesToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +181,10 @@ public class DetailActivity extends AppCompatActivity implements TrailerRecycler
                     mReviewRecyclerViewAdapter.setDataSource(mReviews);
                 }
             }
+            mReviewsLoaded = true;
+            if (mTrailersLoaded){
+                restoreScrollPosition();
+            }
         }
 
         @Override
@@ -210,7 +225,12 @@ public class DetailActivity extends AppCompatActivity implements TrailerRecycler
                     mTrailersTextView.setVisibility(View.VISIBLE);
                     mHasTrailers = true;
                     invalidateOptionsMenu();
+
                 }
+            }
+            mTrailersLoaded = true;
+            if (mReviewsLoaded){
+                restoreScrollPosition();
             }
         }
 
@@ -235,7 +255,13 @@ public class DetailActivity extends AppCompatActivity implements TrailerRecycler
     }
 
     private void removeFromFavorites() {
-        getContentResolver().delete(FavoritesContract.CONTENT_URI, FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=?", new String[]{mMovieId});
+        getContentResolver().delete(FavoritesContract.CONTENT_URI,
+                FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + "=?", new String[]{mMovieId});
+        if (mFavoritesToast!= null){
+            mFavoritesToast.cancel();
+        }
+        mFavoritesToast= Toast.makeText(this, "Movie removed from favorites", Toast.LENGTH_LONG);
+        mFavoritesToast.show();
     }
 
     private void addToFavorites() {
@@ -247,6 +273,11 @@ public class DetailActivity extends AppCompatActivity implements TrailerRecycler
         contentValues.put(FavoritesContract.FavoritesEntry.COLUMN_RELEASE_DATE, mMovieReaseDate);
         contentValues.put(FavoritesContract.FavoritesEntry.COLUMN_AVERAGE_VOTE, mMovieAverageVote);
         getContentResolver().insert(FavoritesContract.CONTENT_URI, contentValues);
+        if (mFavoritesToast!= null){
+            mFavoritesToast.cancel();
+        }
+        mFavoritesToast= Toast.makeText(this, "Movie added to favorites", Toast.LENGTH_LONG);
+        mFavoritesToast.show();
     }
 
     // Using a cursor loader to fetch movie ids to check if selected movie is favorite
@@ -316,6 +347,32 @@ public class DetailActivity extends AppCompatActivity implements TrailerRecycler
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+     //save scroll position on device rotation
+    // https://stackoverflow.com/questions/29208086/save-the-position-of-scrollview-when-the-orientation-changes
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntArray(mScrollPositionKey,
+                new int[]{ mScrollView.getScrollX(), mScrollView.getScrollY()});
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mScrollPosition  = savedInstanceState.getIntArray(mScrollPositionKey);
+
+    }
+// this is only called once the reviews and trailers are both loaded
+    void restoreScrollPosition(){
+        if(mScrollPosition != null)
+            mScrollView.post(new Runnable() {
+               public void run() {
+                    mScrollView.scrollTo(mScrollPosition[0], mScrollPosition[1]);
+                }
+            });
     }
 
 }

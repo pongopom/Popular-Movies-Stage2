@@ -2,6 +2,7 @@
 
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.android.popularmovies.DetailActivity">
@@ -19,11 +20,11 @@
 
             <ImageView
                 android:id="@+id/poster_iv"
-                android:layout_width="150dp"
-                android:layout_height="200dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="@dimen/poster_width"
+                android:layout_height="@dimen/poster_height"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:layout_marginTop="@dimen/padding_medium"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/movie_content_description"
                 android:scaleType="centerCrop" />
@@ -31,24 +32,24 @@
             <Button
                 android:id="@+id/favorite_b"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="120dp"
+                android:layout_width="@dimen/button_width"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginStart="@dimen/padding_small"
                 android:text="@string/add_to_favorites_button_title"
-                android:textSize="12sp" />
+                android:textSize="@dimen/text_size_small" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/title_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:layout_marginStart="@dimen/padding_small"
+            android:layout_marginTop="@dimen/padding_small"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             tools:text="title goes here" />
 
@@ -56,23 +57,23 @@
             android:id="@+id/plot_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:paddingEnd="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingStart="16dp"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:layout_marginStart="@dimen/padding_small"
+            android:paddingEnd="@dimen/padding_large"
+            android:paddingLeft="@dimen/padding_large"
+            android:paddingRight="@dimen/padding_large"
+            android:paddingStart="@dimen/padding_large"
             android:textAlignment="center"
             tools:text="The plot goes here" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/padding_small"
             android:layout_weight="1"
             android:text="@string/release_date_label"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_default"
             android:textStyle="bold" />
 
         <TextView
@@ -86,11 +87,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/padding_small"
             android:layout_weight="1"
             android:text="@string/vote_average_label"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_default"
             android:textStyle="bold" />
 
         <RatingBar
@@ -117,11 +118,11 @@
             android:id="@+id/trailers_header_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/padding_small"
             android:layout_weight="1"
             android:text="@string/trailers_label"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_default"
             android:textStyle="bold"
             android:visibility="gone" />
 
@@ -136,11 +137,11 @@
             android:id="@+id/reviews_header_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/padding_small"
             android:layout_weight="1"
             android:text="@string/reviews_label"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_default"
             android:textStyle="bold"
             android:visibility="gone" />
 
@@ -148,7 +149,7 @@
             android:id="@+id/review_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="@dimen/padding_large"
             android:layout_weight="1">
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

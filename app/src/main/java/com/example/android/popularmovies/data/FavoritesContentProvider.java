@@ -22,11 +22,14 @@ public class FavoritesContentProvider extends ContentProvider {
     public static final int FAVORITES = 100;
     public static final int FAVORITES_WITH_ID = 101;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+
     //FAVORITES_WITH_ID has not  implemented yet and is never sent from any where as a uri
     public static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(FavoritesContract.AUTHORITY, FavoritesContract.FavoritesEntry.TABLE_NAME, FAVORITES);
-        uriMatcher.addURI(FavoritesContract.AUTHORITY, FavoritesContract.FavoritesEntry.TABLE_NAME + "/#", FAVORITES_WITH_ID);
+        uriMatcher.addURI(FavoritesContract.AUTHORITY,
+                FavoritesContract.FavoritesEntry.TABLE_NAME, FAVORITES);
+        uriMatcher.addURI(FavoritesContract.AUTHORITY,
+                FavoritesContract.FavoritesEntry.TABLE_NAME + "/#", FAVORITES_WITH_ID);
         return uriMatcher;
     }
 
@@ -40,7 +43,11 @@ public class FavoritesContentProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
+    public Cursor query(@NonNull Uri uri,
+                        @Nullable String[] strings,
+                        @Nullable String s,
+                        @Nullable String[] strings1,
+                        @Nullable String s1) {
         final SQLiteDatabase db = mDBHelper.getReadableDatabase();
         int match = sUriMatcher.match(uri);
         Cursor returnCursor;
@@ -76,7 +83,8 @@ public class FavoritesContentProvider extends ContentProvider {
         Uri returnUri;
         switch (match) {
             case FAVORITES:
-                long id = db.insert(FavoritesContract.FavoritesEntry.TABLE_NAME, null, contentValues);
+                long id = db.insert(FavoritesContract.FavoritesEntry.TABLE_NAME,
+                        null, contentValues);
                 if (id > 0) {
                     returnUri = ContentUris.withAppendedId(FavoritesContract.CONTENT_URI, id);
 
@@ -92,7 +100,9 @@ public class FavoritesContentProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+    public int delete(@NonNull Uri uri,
+                      @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
         int numRowsDeleted;
         //passing "1" as selection will clear the data base
         if (null == selection) selection = "1";
@@ -114,7 +124,10 @@ public class FavoritesContentProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s, @Nullable String[] strings) {
+    public int update(@NonNull Uri uri,
+                      @Nullable ContentValues contentValues,
+                      @Nullable String s,
+                      @Nullable String[] strings) {
         return 0;
     }
 }

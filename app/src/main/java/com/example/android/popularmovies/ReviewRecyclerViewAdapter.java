@@ -15,7 +15,8 @@ import java.util.ArrayList;
  * for showing reviews in detail view
  */
 
-public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecyclerViewAdapter.ReviewViewHolder> {
+public class ReviewRecyclerViewAdapter extends
+        RecyclerView.Adapter<ReviewRecyclerViewAdapter.ReviewViewHolder> {
 
     private ArrayList<Review> mDataSource;
 

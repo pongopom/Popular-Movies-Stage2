@@ -1,8 +1,6 @@
 package com.example.android.popularmovies.utils;
 
-import android.content.Context;
 import android.content.res.Resources;
-import android.util.DisplayMetrics;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -36,14 +34,6 @@ public class ApplicationUtils {
         return df.format(date);
     }
 
-    // This helper method is used to calculate the number of rows that can fit on the screen landscape and portrate
-    // Information for this found on stackOverflow see link below.
-    // https://stackoverflow.com/questions/33575731/gridlayoutmanager-how-to-auto-fit-columns
 
-    public static int calculateNoOfColumns(Context context) {
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        return (int) (dpWidth / VIEW_WIDTH);
-    }
 
 }

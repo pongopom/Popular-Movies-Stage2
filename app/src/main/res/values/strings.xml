@@ -34,4 +34,8 @@
     <string name="share_intent_title">Share Options</string>
     <string name="share_body" >Movie trailer</string>
     <string name="share_button_title" >Share</string>
+    <!-- keys for save state-->
+    <string name="scroll_position_key" translatable="false">"scrollPosition"</string>
+    <string name="recycler_position_key" translatable="false">"recyclerPosition"</string>
+
 </resources>
