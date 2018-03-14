@@ -1,7 +1,7 @@
 # Popular-Movies-Stage2
 ##  My version of Popular Movies 
 ### Udacity Android Developer Nanodegree project 2
-![alt text](https://github.com/pongopom/Popular-Movies-Stage2/commit/774895a6fe47d9119e813f4670a7e42c51ed443d)
+![alt text](https://github.com/pongopom/Popular-Movies-Stage2/blob/774895a6fe47d9119e813f4670a7e42c51ed443d/popMovies.jpg)
 Udacity Android Developer Project Movies Stage 2
 
 Project Overview
